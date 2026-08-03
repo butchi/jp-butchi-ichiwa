@@ -2,187 +2,63 @@
 
 import { useMemo, useState } from "react";
 
+type Format = "X完全連載型" | "独立短編・4コマ型" | "完結アーカイブ型" | "試し読み・外部誘導型";
+
 type Manga = {
   title: string;
   author: string;
   handle: string;
   summary: string;
   genre: string;
+  format: Format;
   tags: string[];
   accent: string;
   mark: string;
-  xPostUrl?: string;
+  xPostUrl: string;
+  entryLabel: string;
 };
 
 const mangaList: Manga[] = [
-  {
-    title: "月曜日の宇宙人",
-    author: "青井ハル",
-    handle: "@aoi_haru",
-    summary: "憂うつな月曜の朝、駅のホームで出会ったのは、地球の会社に初出勤する宇宙人でした。",
-    genre: "コメディ",
-    tags: ["日常", "SF", "ほっこり"],
-    accent: "coral",
-    mark: "月",
-  },
-  {
-    title: "となりの透明さん",
-    author: "三角ミナ",
-    handle: "@minamina_comic",
-    summary: "姿の見えない隣人と、壁越しに始まる不思議な共同生活。声だけの距離が少しずつ近づいていく。",
-    genre: "恋愛",
-    tags: ["青春", "ラブコメ", "不思議"],
-    accent: "blue",
-    mark: "透",
-  },
-  {
-    title: "深夜二時の喫茶店",
-    author: "夜野トワ",
-    handle: "@yoruno_towa",
-    summary: "眠れない人だけがたどり着く店。無口な店主と一杯のコーヒーが、今夜の悩みをほどいていく。",
-    genre: "ドラマ",
-    tags: ["ヒューマン", "短編", "夜"],
-    accent: "navy",
-    mark: "夜",
-  },
-  {
-    title: "勇者、家事代行になります",
-    author: "山田ポチ",
-    handle: "@poti_yamada",
-    summary: "魔王を倒した勇者の次の仕事は家事代行。伝説の剣で切るのは、世界ではなく長ねぎです。",
-    genre: "ファンタジー",
-    tags: ["ギャグ", "異世界", "お仕事"],
-    accent: "yellow",
-    mark: "勇",
-  },
-  {
-    title: "猫町アパートメント",
-    author: "ねむりネコ",
-    handle: "@nemurineko_zzz",
-    summary: "住人はみんな訳ありの猫。古いアパートを舞台にした、やさしくて少し切ない群像劇。",
-    genre: "日常",
-    tags: ["動物", "癒やし", "群像劇"],
-    accent: "green",
-    mark: "猫",
-  },
-  {
-    title: "放課後エンドロール",
-    author: "橘ユウ",
-    handle: "@tachibana_yu",
-    summary: "廃部寸前の映画部で出会った三人。最後の文化祭へ向けて、まだ名前のない物語を撮り始める。",
-    genre: "青春",
-    tags: ["学園", "友情", "映画"],
-    accent: "pink",
-    mark: "映",
-  },
+  { title: "ちいかわ", author: "ナガノ", handle: "@ngnchiikawa", summary: "小さくてかわいいキャラクターたちの日常と冒険を描く、X発の継続連載。", genre: "日常・ファンタジー", format: "X完全連載型", tags: ["連載中", "日常", "ファンタジー"], accent: "coral", mark: "ち", xPostUrl: "https://x.com/ngnchiikawa/status/1221832141786378241", entryLabel: "第1話を読む" },
+  { title: "ねこに転生したおじさん", author: "やじま", handle: "@yajima_en", summary: "猫に転生したおじさんと、彼を溺愛する社長の毎日を描くショート連載。", genre: "コメディ", format: "X完全連載型", tags: ["連載中", "猫", "日常"], accent: "blue", mark: "猫", xPostUrl: "https://x.com/yajima_en/status/1622215266385158144", entryLabel: "第1話を読む" },
+  { title: "毎日でぶどり", author: "毎日でぶどり", handle: "@debu_dori", summary: "仕事や生活の「あるある」を、でぶどりたちが軽やかに切り取る4コマ作品。", genre: "4コマ・コメディ", format: "独立短編・4コマ型", tags: ["4コマ", "仕事", "日常"], accent: "navy", mark: "鳥", xPostUrl: "https://x.com/debu_dori/status/957227822472298496", entryLabel: "最初の掲載作を読む" },
+  { title: "ねこようかい", author: "ぱんだにあ", handle: "@pandania0", summary: "猫と妖怪が自然に暮らす世界を、ゆるく不思議に描く4コマシリーズ。", genre: "4コマ・ファンタジー", format: "独立短編・4コマ型", tags: ["4コマ", "猫", "妖怪"], accent: "yellow", mark: "妖", xPostUrl: "https://x.com/pandania0/status/667642138939621380", entryLabel: "第1話を読む" },
+  { title: "100日後に死ぬワニ", author: "きくちゆうき", handle: "@yuukikikuchi", summary: "ワニの何気ない100日間を、1日1話で追った完結済みのカウントダウン漫画。", genre: "ドラマ", format: "完結アーカイブ型", tags: ["完結", "カウントダウン", "日常"], accent: "green", mark: "ワ", xPostUrl: "https://x.com/yuukikikuchi/status/1206558270195822593", entryLabel: "1日目を読む" },
 ];
 
-const genres = ["すべて", "コメディ", "恋愛", "ドラマ", "ファンタジー", "日常", "青春"];
+const formats = ["すべて", "X完全連載型", "独立短編・4コマ型", "完結アーカイブ型", "試し読み・外部誘導型"] as const;
 
 export function MangaDirectory() {
   const [query, setQuery] = useState("");
-  const [genre, setGenre] = useState("すべて");
-
-  const filtered = useMemo(() => {
+  const [format, setFormat] = useState<(typeof formats)[number]>("すべて");
+  const filtered = useMemo(() => mangaList.filter((manga) => {
     const normalized = query.trim().toLowerCase();
-    return mangaList.filter((manga) => {
-      const matchesGenre = genre === "すべて" || manga.genre === genre;
-      const haystack = [manga.title, manga.author, manga.handle, manga.summary, ...manga.tags]
-        .join(" ")
-        .toLowerCase();
-      return matchesGenre && (!normalized || haystack.includes(normalized));
-    });
-  }, [genre, query]);
+    const haystack = [manga.title, manga.author, manga.handle, manga.summary, manga.genre, manga.format, ...manga.tags].join(" ").toLowerCase();
+    return (format === "すべて" || manga.format === format) && (!normalized || haystack.includes(normalized));
+  }), [format, query]);
 
-  return (
-    <main>
-      <header className="site-header">
-        <a className="brand" href="#top" aria-label="いちわ ホーム">
-          <span className="brand-mark">一</span>
-          <span>いちわ</span>
-        </a>
-        <nav aria-label="メインナビゲーション">
-          <a href="#top">作品を探す</a>
-          <a href="#about">このサイトについて</a>
-        </nav>
-        <a className="submit-link" href="mailto:hello@example.com?subject=作品掲載の相談">作品を掲載する <span>↗</span></a>
-      </header>
-
-      <section className="directory" id="top">
-        <div className="section-heading">
-          <div>
-            <p className="eyebrow"><span /> WEB COMIC DIRECTORY</p>
-            <h2>第1話から、探す。</h2>
-          </div>
-          <p>いま読める <strong>{mangaList.length}</strong> 作品</p>
-        </div>
-
-        <div className="search-row">
-          <label className="search-box">
-            <span aria-hidden="true">⌕</span>
-            <span className="sr-only">作品を検索</span>
-            <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="タイトル・作者・キーワードで検索" />
-          </label>
-          <div className="genre-list" aria-label="ジャンルで絞り込む">
-            {genres.map((item) => (
-              <button className={genre === item ? "active" : ""} key={item} onClick={() => setGenre(item)}>{item}</button>
-            ))}
-          </div>
-        </div>
-
-        {filtered.length > 0 ? (
-          <div className="manga-grid">
-            {filtered.map((manga, index) => <MangaCard manga={manga} number={index + 1} key={manga.title} />)}
-          </div>
-        ) : (
-          <div className="empty-state"><span>〇</span><h3>作品が見つかりませんでした</h3><p>検索ワードやジャンルを変えてみてください。</p></div>
-        )}
-      </section>
-
-      <section className="about" id="about">
-        <p className="eyebrow"><span /> ABOUT ICHIWA</p>
-        <div className="about-grid">
-          <h2>たった1話から、<br />好きがはじまる。</h2>
-          <div>
-            <p>「いちわ」は、Xで公開されているWeb漫画の第1話を集めた小さな本棚です。タイムラインで見かけた作品も、まだ知らない作品も、ここから物語の入口へ。</p>
-            <p className="note">掲載作品は作者による公開ポストへ直接つながります。</p>
-          </div>
-        </div>
-      </section>
-
-      <footer>
-        <a className="brand footer-brand" href="#top"><span className="brand-mark">一</span><span>いちわ</span></a>
-        <p>Web漫画の第1話が見つかる場所。</p>
-        <p className="copyright">© 2026 ICHIWA</p>
-      </footer>
-    </main>
-  );
+  return <main>
+    <header className="site-header">
+      <a className="brand" href="#top" aria-label="いちわ ホーム"><span className="brand-mark">一</span><span>いちわ</span></a>
+      <nav aria-label="メインナビゲーション"><a href="#top">作品を探す</a><a href="#about">このサイトについて</a></nav>
+      <a className="submit-link" href="mailto:hello@example.com?subject=作品掲載の相談">作品を掲載する <span>↗</span></a>
+    </header>
+    <section className="directory" id="top">
+      <div className="section-heading"><div><p className="eyebrow"><span /> WEB COMIC DIRECTORY</p><h2>第1話から、探す。</h2></div><p>いま読める <strong>{mangaList.length}</strong> 作品</p></div>
+      <div className="search-row">
+        <label className="search-box"><span aria-hidden="true">⌕</span><span className="sr-only">作品を検索</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="タイトル・作者・キーワードで検索" /></label>
+        <div className="genre-list" aria-label="公開形式で絞り込む">{formats.map((item) => <button className={format === item ? "active" : ""} key={item} onClick={() => setFormat(item)}>{item}</button>)}</div>
+      </div>
+      {filtered.length ? <div className="manga-grid">{filtered.map((manga, index) => <MangaCard manga={manga} number={index + 1} key={manga.title} />)}</div> : <div className="empty-state"><span>〇</span><h3>作品が見つかりませんでした</h3><p>検索ワードや公開形式を変えてみてください。</p></div>}
+    </section>
+    <section className="about" id="about"><p className="eyebrow"><span /> ABOUT ICHIWA</p><div className="about-grid"><h2>たった1話から、<br />好きがはじまる。</h2><div><p>「いちわ」は、Xで公開されているWeb漫画の第1話を集めた小さな本棚です。作者本人または出版社公式アカウントの投稿だけを掲載し、物語の入口へ直接つなぎます。</p><p className="note">公開形式：X完全連載型／独立短編・4コマ型／完結アーカイブ型／試し読み・外部誘導型</p></div></div></section>
+    <footer><a className="brand footer-brand" href="#top"><span className="brand-mark">一</span><span>いちわ</span></a><p>Web漫画の第1話が見つかる場所。</p><p className="copyright">© 2026 ICHIWA</p></footer>
+  </main>;
 }
 
 function MangaCard({ manga, number }: { manga: Manga; number: number }) {
-  return (
-    <article className="manga-card">
-      <div className={`post-preview ${manga.accent}`}>
-        {manga.xPostUrl ? (
-          <blockquote className="twitter-tweet"><a href={manga.xPostUrl}>Xで第1話を読む</a></blockquote>
-        ) : (
-          <div className="sample-post">
-            <div className="post-user"><span>{manga.author.slice(0, 1)}</span><p><strong>{manga.author}</strong><small>{manga.handle}</small></p><b>𝕏</b></div>
-            <div className="comic-panel"><i>第1話</i><strong>{manga.mark}</strong><small>サンプル作品</small></div>
-            <p>『{manga.title}』第1話</p>
-            <div className="post-meta"><span>♡ 1,248</span><span>↻ 384</span><span>▱ 12.8万</span></div>
-          </div>
-        )}
-        <span className="card-number">{String(number).padStart(2, "0")}</span>
-      </div>
-      <div className="card-content">
-        <div className="card-genre">{manga.genre}</div>
-        <h3>{manga.title}</h3>
-        <p className="author">{manga.author} <span>{manga.handle}</span></p>
-        <p className="summary">{manga.summary}</p>
-        <div className="tags">{manga.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div>
-        {manga.xPostUrl ? <a className="read-link" href={manga.xPostUrl} target="_blank" rel="noreferrer">Xで第1話を読む <span>→</span></a> : <span className="read-link disabled">サンプル作品 <span>—</span></span>}
-      </div>
-    </article>
-  );
+  return <article className="manga-card">
+    <div className={`post-preview ${manga.accent}`}><div className="sample-post"><div className="post-user"><span>{manga.author.slice(0, 1)}</span><p><strong>{manga.author}</strong><small>{manga.handle}</small></p><b>𝕏</b></div><div className="comic-panel"><i>{manga.entryLabel}</i><strong>{manga.mark}</strong><small>{manga.format}</small></div><p>『{manga.title}』</p><div className="post-meta"><span>本人アカウント</span><span>第1話リンク</span><span>↗</span></div></div><span className="card-number">{String(number).padStart(2, "0")}</span></div>
+    <div className="card-content"><div className="card-genre">{manga.format}</div><h3>{manga.title}</h3><p className="author">{manga.author} <span>{manga.handle}</span></p><p className="summary">{manga.summary}</p><div className="tags">{manga.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div><a className="read-link" href={manga.xPostUrl} target="_blank" rel="noreferrer">Xで{manga.entryLabel} <span>→</span></a></div>
+  </article>;
 }
