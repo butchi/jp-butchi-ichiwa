@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Format = "X完全連載型" | "独立短編・4コマ型" | "完結アーカイブ型" | "試し読み・外部誘導型";
 
@@ -58,7 +58,35 @@ export function MangaDirectory() {
 
 function MangaCard({ manga, number }: { manga: Manga; number: number }) {
   return <article className="manga-card">
-    <div className={`post-preview ${manga.accent}`}><div className="sample-post"><div className="post-user"><span>{manga.author.slice(0, 1)}</span><p><strong>{manga.author}</strong><small>{manga.handle}</small></p><b>𝕏</b></div><div className="comic-panel"><i>{manga.entryLabel}</i><strong>{manga.mark}</strong><small>{manga.format}</small></div><p>『{manga.title}』</p><div className="post-meta"><span>本人アカウント</span><span>第1話リンク</span><span>↗</span></div></div><span className="card-number">{String(number).padStart(2, "0")}</span></div>
+    <div className={`post-preview ${manga.accent}`}><XPostEmbed url={manga.xPostUrl} label={`${manga.title} ${manga.entryLabel}`} /><span className="card-number">{String(number).padStart(2, "0")}</span></div>
     <div className="card-content"><div className="card-genre">{manga.format}</div><h3>{manga.title}</h3><p className="author">{manga.author} <span>{manga.handle}</span></p><p className="summary">{manga.summary}</p><div className="tags">{manga.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div><a className="read-link" href={manga.xPostUrl} target="_blank" rel="noreferrer">Xで{manga.entryLabel} <span>→</span></a></div>
   </article>;
+}
+
+function XPostEmbed({ url, label }: { url: string; label: string }) {
+  const container = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const load = () => window.twttr?.widgets.load(container.current ?? undefined);
+    const existing = document.querySelector<HTMLScriptElement>('script[src="https://platform.twitter.com/widgets.js"]');
+    if (existing) {
+      existing.addEventListener("load", load);
+      load();
+      return () => existing.removeEventListener("load", load);
+    }
+    const script = document.createElement("script");
+    script.src = "https://platform.twitter.com/widgets.js";
+    script.async = true;
+    script.addEventListener("load", load);
+    document.body.appendChild(script);
+    return () => script.removeEventListener("load", load);
+  }, []);
+
+  return <div className="x-embed" ref={container}><blockquote className="twitter-tweet" data-dnt="true" data-conversation="none"><a href={url}>{label}</a></blockquote></div>;
+}
+
+declare global {
+  interface Window {
+    twttr?: { widgets: { load: (element?: HTMLElement) => void } };
+  }
 }

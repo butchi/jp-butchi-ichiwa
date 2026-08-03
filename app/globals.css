@@ -37,6 +37,8 @@ button, input { font: inherit; }
 .post-preview { position: relative; padding: 22px; min-height: 320px; display: grid; place-items: center; overflow: hidden; border: 1px solid rgba(24,34,27,.25); }
 .post-preview::before { content: ""; position: absolute; width: 180px; height: 180px; border: 38px solid rgba(255,255,255,.2); border-radius: 50%; top: -70px; left: -65px; }
 .post-preview.coral { background: #e37763; }.post-preview.blue { background: #9dc1cd; }.post-preview.navy { background: #66786e; }.post-preview.yellow { background: #eacb66; }.post-preview.green { background: #a9bd9e; }.post-preview.pink { background: #d9a4a0; }
+.x-embed { position: relative; z-index: 1; width: 100%; max-width: 550px; max-height: 520px; overflow: auto; scrollbar-width: thin; }
+.x-embed .twitter-tweet { margin: 0 auto !important; min-width: 0 !important; }
 .sample-post { position: relative; z-index: 1; width: min(100%, 330px); background: #fff; border-radius: 7px; padding: 13px; box-shadow: 0 12px 30px rgba(24,34,27,.18); font-size: 11px; }
 .post-user { display: flex; align-items: center; gap: 9px; }.post-user > span { display: grid; place-items: center; width: 31px; height: 31px; border-radius: 50%; background: var(--ink); color: #fff; }.post-user p { margin: 0; line-height: 1.25; }.post-user small { display: block; color: #7b827d; }.post-user b { margin-left: auto; font-size: 17px; }
 .comic-panel { height: 154px; margin: 11px 0 8px; border: 2px solid var(--ink); background: #f5f0e5; position: relative; display: grid; place-items: center; overflow: hidden; }
