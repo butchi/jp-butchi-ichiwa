@@ -102,32 +102,17 @@ export function MangaDirectory() {
           <span>いちわ</span>
         </a>
         <nav aria-label="メインナビゲーション">
-          <a href="#works">作品を探す</a>
+          <a href="#top">作品を探す</a>
           <a href="#about">このサイトについて</a>
         </nav>
         <a className="submit-link" href="mailto:hello@example.com?subject=作品掲載の相談">作品を掲載する <span>↗</span></a>
       </header>
 
-      <section className="hero" id="top">
-        <div className="hero-copy">
-          <p className="eyebrow"><span /> WEB COMIC DISCOVERY</p>
-          <h1>最初の<span>1話</span>が、<br />いちばん面白い。</h1>
-          <p className="hero-description">Xで話題のWeb漫画を、第1話から。<br />あなたの「続きが読みたい」がきっと見つかる。</p>
-        </div>
-        <div className="hero-art" aria-hidden="true">
-          <div className="sun" />
-          <div className="book book-back"><span>つづきは<br />どこへ？</span></div>
-          <div className="book book-front"><span className="book-label">WEB COMIC</span><strong>第<br />一<br />話</strong><i>から、はじまる。</i></div>
-          <span className="spark spark-one">✦</span>
-          <span className="spark spark-two">✦</span>
-        </div>
-      </section>
-
-      <section className="directory" id="works">
+      <section className="directory" id="top">
         <div className="section-heading">
           <div>
-            <p className="eyebrow"><span /> PICK YOUR STORY</p>
-            <h2>次は、どの物語へ？</h2>
+            <p className="eyebrow"><span /> WEB COMIC DIRECTORY</p>
+            <h2>第1話から、探す。</h2>
           </div>
           <p>いま読める <strong>{mangaList.length}</strong> 作品</p>
         </div>
