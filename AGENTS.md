@@ -2,10 +2,11 @@
 
 ## 開発
 
-- vinext、React、TypeScript、Tailwind CSSを使用する。
+- React、Vite、TypeScriptを使用する静的サイト。
 - パッケージ管理にはnpmを使用する。
 - `npm run dev`で開発し、`npm run build`で公開ビルドを検証する。
 - 作品データは`app/MangaDirectory.tsx`内の`mangaList`で管理する。
+- Cloudflare Pagesでは「React (Vite)」プリセット、ビルドコマンド`npm run build`、出力ディレクトリ`dist`を使用する。
 - 実在作品を登録するときは、作者名・概要・Xの第1話ポストURLを確認する。
 
 ## ドキュメント関係
