@@ -1,9 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_JP, Zen_Old_Mincho } from "next/font/google";
 import "./globals.css";
-
-const sans = Noto_Sans_JP({ variable: "--font-sans", subsets: ["latin"], weight: ["400", "500", "600", "700", "800"] });
-const mincho = Zen_Old_Mincho({ variable: "--font-mincho", subsets: ["latin"], weight: ["600", "700", "900"] });
 
 export const metadata: Metadata = {
   title: "いちわ｜Web漫画の第1話が見つかる場所",
@@ -12,5 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="ja"><body className={`${sans.variable} ${mincho.variable}`}>{children}</body></html>;
+  return <html lang="ja"><body>{children}</body></html>;
 }
