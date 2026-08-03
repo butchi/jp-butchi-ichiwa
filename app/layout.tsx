@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "いちわ｜Web漫画の第1話が見つかる場所",
-  description: "Xで公開されているWeb漫画を、第1話から探せる漫画リンク集。",
+  title: "いちわ｜Xで読めるWeb漫画の第1話・最新話一覧",
+  description: "Xで読めるWeb漫画の第1話を探せる作品一覧。作者、キャラクター、最新話、全巻、映画・アニメ化の公式情報への入口をまとめています。",
   icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
 };
 
