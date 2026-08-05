@@ -70,7 +70,7 @@ export function MangaDirectory() {
       <a className="submit-link" href="mailto:hello@example.com?subject=作品掲載の相談">作品を掲載する <span>↗</span></a>
     </header>
     <section className="directory" id="top">
-      <div className="section-heading"><div><p className="eyebrow"><span /> WEB COMIC DIRECTORY</p><h2>第1話から、探す。</h2></div><p>いま読める <strong>{mangaList.length}</strong> 作品</p></div>
+      <div className="section-heading"><div><p className="eyebrow"><span /> WEB COMIC DIRECTORY</p><h1>第1話から、探す。</h1></div><p>いま読める <strong>{mangaList.length}</strong> 作品</p></div>
       <p className="directory-intro">Xで読めるWeb漫画を、作品・作者・公開形式から探せる一覧です。気になるキャラクターや話題の作品は、公式ポストから第1話へ。最新話、全巻、映画化などの最新情報は、作品ごとの公式アカウントや出版社の案内もあわせてご確認ください。</p>
       <div className="search-row">
         <label className="search-box"><span aria-hidden="true">⌕</span><span className="sr-only">作品を検索</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="タイトル・作者・キーワードで検索" /></label>
