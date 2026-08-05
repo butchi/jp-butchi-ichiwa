@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jp-butchi-ichiwa.pages.dev/sitemap.xml
+Sitemap: https://ichiwa.butchi.jp/sitemap.xml
