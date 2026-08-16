@@ -194,7 +194,7 @@ export function MangaDirectory() {
       {filtered.length ? <div className="manga-grid">{filtered.map((manga, index) => <MangaCard manga={manga} number={index + 1} key={manga.title} />)}</div> : <div className="empty-state"><span>〇</span><h3>作品が見つかりませんでした</h3><p>検索ワードや公開形式を変えてみてください。</p></div>}
     </section>
     <section className="about" id="about"><p className="eyebrow"><span /> ABOUT ICHIWA</p><div className="about-grid"><h2>たった1話から、<br />好きがはじまる。</h2><div><p>「いちわ」は、Xで公開されているWeb漫画の第1話を集めた小さな本棚です。作者本人または出版社公式アカウントの投稿だけを掲載し、物語の入口へ直接つなぎます。</p><p>連載中の作品は最新話を追う入口として、完結作品は読み返し用のアーカイブとして整理しています。書籍の全巻情報、映画・アニメなどの映像化、キャラクター情報は変更されることがあるため、購入や視聴の前には各作品の公式案内をご確認ください。</p><p className="note">公開形式：X完全連載型／独立短編・4コマ型／完結アーカイブ型／試し読み・外部誘導型</p><p className="ai-notice">サイト制作の一部に生成AIを利用しています。掲載内容に問題があればXのDMにてご連絡ください。</p></div></div></section>
-    <footer><a className="brand footer-brand" href="#top"><span className="brand-mark">一</span><span>いちわ</span></a><p>Web漫画の第1話が見つかる場所。</p><p className="copyright">© 2026 ICHIWA</p></footer>
+    <footer><a className="brand footer-brand" href="#top"><span className="brand-mark">一</span><span>いちわ</span></a><p>Web漫画の第1話が見つかる場所。</p><p className="copyright">© 2026 <a href="https://x.com/butchi_y">岩淵夕希物智</a></p></footer>
   </main>;
 }
 
