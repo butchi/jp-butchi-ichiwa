@@ -1,15 +1,16 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- This Vite entry uses standard document navigation. */
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AdSenseUnit } from "./AdSenseUnit";
 
-type Format =
+export type Format =
   | "X完全連載型"
   | "独立短編・4コマ型"
   | "完結アーカイブ型"
   | "試し読み・外部誘導型";
 
-type Manga = {
+export type Manga = {
   slug: string;
   title: string;
   author: string;
@@ -49,7 +50,7 @@ const entry = (
   mark: title.slice(0, 1),
 });
 
-const mangaList: Manga[] = [
+export const mangaList: Manga[] = [
   entry("chiikawa", "ちいかわ", "ナガノ", "ngnchiikawa", "小さくてかわいいキャラクターたちの日常と冒険を描くX発の継続連載。", "日常・ファンタジー", "X完全連載型", "https://x.com/ngnchiikawa/status/1221617681654108160", ["連載中", "日常", "キャラクター"]),
   entry("nekooji", "ねこに転生したおじさん", "やじま", "yajima_en", "おじさんが猫になってしまった生活を描くSNS発漫画。", "動物・日常", "X完全連載型", "https://x.com/yajima_en/status/1622215266385158144", ["猫", "転生"]),
   entry("kinioto", "気になってる人が男じゃなかった", "新井すみこ", "agu_knzm", "音楽をきっかけに始まる青春恋愛漫画。", "青春・恋愛", "X完全連載型", "https://x.com/agu_knzm/status/1512998788025110532", ["青春", "音楽"]),
@@ -178,7 +179,7 @@ export function MangaDirectory() {
 
   return <main>
     <header className="site-header">
-      <a className="brand" href="#top" aria-label="いちわ ホーム"><span className="brand-mark">一</span><span>いちわ</span></a>
+      <a className="brand" href="/#top" aria-label="いちわ ホーム"><span className="brand-mark">一</span><span>いちわ</span></a>
       <nav aria-label="メインナビゲーション"><a href="#top">作品を探す</a><a href="#about">このサイトについて</a></nav>
       <a className="submit-link" href="https://x.com/butchi_y">作品を掲載する (DM)<span>↗</span></a>
     </header>
@@ -197,14 +198,14 @@ export function MangaDirectory() {
       </section>
     </section>
     <section className="about" id="about"><p className="eyebrow"><span /> ABOUT ICHIWA</p><div className="about-grid"><h2>たった1話から、<br />好きがはじまる。</h2><div><p>「いちわ」は、Xで公開されているWeb漫画の第1話を集めた小さな本棚です。作者本人または出版社公式アカウントの投稿だけを掲載し、物語の入口へ直接つなぎます。</p><p>連載中の作品は最新話を追う入口として、完結作品は読み返し用のアーカイブとして整理しています。書籍の全巻情報、映画・アニメなどの映像化、キャラクター情報は変更されることがあるため、購入や視聴の前には各作品の公式案内をご確認ください。</p><p className="note">公開形式：X完全連載型／独立短編・4コマ型／完結アーカイブ型／試し読み・外部誘導型</p><p className="ai-notice">サイト制作の一部に生成AIを利用しています。掲載内容に問題があればXのDMにてご連絡ください。</p></div></div></section>
-    <footer><a className="brand footer-brand" href="#top"><span className="brand-mark">一</span><span>いちわ</span></a><p>Web漫画の第1話が見つかる場所。</p><p className="copyright">© 2026 <a href="https://x.com/butchi_y">岩淵夕希物智</a></p></footer>
+    <footer><a className="brand footer-brand" href="/#top"><span className="brand-mark">一</span><span>いちわ</span></a><p>Web漫画の第1話が見つかる場所。</p><p className="copyright">© 2026 <a href="https://x.com/butchi_y">岩淵夕希物智</a></p></footer>
   </main>;
 }
 
 function MangaCard({ manga, number }: { manga: Manga; number: number }) {
   return <article className="manga-card">
     <div className={`post-preview ${manga.accent}`}>{manga.xPostUrl ? <XPostEmbed url={manga.xPostUrl} label={`${manga.title} ${manga.entryLabel}`} /> : <OfficialPostPending manga={manga} />}<span className="card-number">{String(number).padStart(2, "0")}</span></div>
-    <div className="card-content"><div className="card-genre">{manga.format}</div><h3>{manga.title}</h3><p className="author">{manga.author} {manga.handle.startsWith("@") ? <a className="author-handle" href={`https://x.com/${manga.handle.slice(1)}`} target="_blank" rel="noopener noreferrer" aria-label={`${manga.author}のXアカウント`}>{manga.handle}</a> : <span>{manga.handle}</span>}</p><p className="summary">{manga.summary}</p><div className="tags">{manga.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div>{manga.xPostUrl ? <a className="read-link" href={manga.xPostUrl} target="_blank" rel="noopener noreferrer">Xで{manga.entryLabel} <span>→</span></a> : <span className="read-link is-pending">公式ポストを確認中 <span>—</span></span>}</div>
+    <div className="card-content"><div className="card-genre">{manga.format}</div><h3><a href={`/manga/${manga.slug}`}>{manga.title}</a></h3><p className="author">{manga.author} {manga.handle.startsWith("@") ? <a className="author-handle" href={`https://x.com/${manga.handle.slice(1)}`} target="_blank" rel="noopener noreferrer" aria-label={`${manga.author}のXアカウント`}>{manga.handle}</a> : <span>{manga.handle}</span>}</p><p className="summary">{manga.summary}</p><div className="tags">{manga.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div><a className="detail-link" href={`/manga/${manga.slug}`}>作品ページを見る <span>→</span></a>{manga.xPostUrl ? <a className="read-link" href={manga.xPostUrl} target="_blank" rel="noopener noreferrer">Xで{manga.entryLabel} <span>↗</span></a> : <span className="read-link is-pending">公式ポストを確認中 <span>—</span></span>}</div>
   </article>;
 }
 
@@ -212,7 +213,7 @@ function OfficialPostPending({ manga }: { manga: Manga }) {
   return <div className="embed-pending"><span aria-hidden="true">𝕏</span><p>公式ポストを確認中</p><small>{manga.handle}</small></div>;
 }
 
-function XPostEmbed({ url, label }: { url: string; label: string }) {
+export function XPostEmbed({ url, label }: { url: string; label: string }) {
   const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
