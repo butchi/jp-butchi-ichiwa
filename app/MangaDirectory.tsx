@@ -3,7 +3,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { AdSenseUnit } from "./AdSenseUnit";
 
-type Format = "X完全連載型" | "独立短編・4コマ型" | "完結アーカイブ型" | "試し読み・外部誘導型";
+type Format =
+  | "X完全連載型"
+  | "独立短編・4コマ型"
+  | "完結アーカイブ型"
+  | "試し読み・外部誘導型";
 
 type Manga = {
   title: string;
@@ -19,7 +23,28 @@ type Manga = {
   entryLabel: string;
 };
 
-const entry = (title: string, author: string, handle: string, summary: string, genre: string, format: Format, xPostUrl?: string, tags: string[] = []) => ({ title, author, handle: handle ? `@${handle}` : "公式アカウント確認中", format, xPostUrl, tags, entryLabel: "公式ポストを読む", summary: summary || "Xで公開された作品ポストから読めるWeb漫画です。", genre: genre || "Web漫画", accent: ["coral", "blue", "navy", "yellow", "green", "pink"][title.length % 6], mark: title.slice(0, 1) });
+const entry = (
+  title: string,
+  author: string,
+  handle: string,
+  summary: string,
+  genre: string,
+  format: Format,
+  xPostUrl?: string,
+  tags: string[] = []
+): Manga => ({
+  title,
+  author,
+  handle: handle ? `@${handle}` : "公式アカウント確認中",
+  format,
+  xPostUrl,
+  tags,
+  entryLabel: "公式ポストを読む",
+  summary: summary || "Xで公開された作品ポストから読めるWeb漫画です。",
+  genre: genre || "Web漫画",
+  accent: ["coral", "blue", "navy", "yellow", "green", "pink"][title.length % 6],
+  mark: title.slice(0, 1),
+});
 
 const mangaList: Manga[] = [
   entry("ちいかわ", "ナガノ", "ngnchiikawa", "小さくてかわいいキャラクターたちの日常と冒険を描くX発の継続連載。", "日常・ファンタジー", "X完全連載型", "https://x.com/ngnchiikawa/status/1221617681654108160", ["連載中", "日常", "キャラクター"]),
