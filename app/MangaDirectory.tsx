@@ -201,7 +201,7 @@ export function MangaDirectory() {
 function MangaCard({ manga, number }: { manga: Manga; number: number }) {
   return <article className="manga-card">
     <div className={`post-preview ${manga.accent}`}>{manga.xPostUrl ? <XPostEmbed url={manga.xPostUrl} label={`${manga.title} ${manga.entryLabel}`} /> : <OfficialPostPending manga={manga} />}<span className="card-number">{String(number).padStart(2, "0")}</span></div>
-    <div className="card-content"><div className="card-genre">{manga.format}</div><h3>{manga.title}</h3><p className="author">{manga.author} <span>{manga.handle}</span></p><p className="summary">{manga.summary}</p><div className="tags">{manga.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div>{manga.xPostUrl ? <a className="read-link" href={manga.xPostUrl} target="_blank" rel="noopener noreferrer">Xで{manga.entryLabel} <span>→</span></a> : <span className="read-link is-pending">公式ポストを確認中 <span>—</span></span>}</div>
+    <div className="card-content"><div className="card-genre">{manga.format}</div><h3>{manga.title}</h3><p className="author">{manga.author} {manga.handle.startsWith("@") ? <a className="author-handle" href={`https://x.com/${manga.handle.slice(1)}`} target="_blank" rel="noopener noreferrer" aria-label={`${manga.author}のXアカウント`}>{manga.handle}</a> : <span>{manga.handle}</span>}</p><p className="summary">{manga.summary}</p><div className="tags">{manga.tags.map((tag) => <span key={tag}>#{tag}</span>)}</div>{manga.xPostUrl ? <a className="read-link" href={manga.xPostUrl} target="_blank" rel="noopener noreferrer">Xで{manga.entryLabel} <span>→</span></a> : <span className="read-link is-pending">公式ポストを確認中 <span>—</span></span>}</div>
   </article>;
 }
 
