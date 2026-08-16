@@ -177,7 +177,7 @@ export function MangaDirectory() {
     <header className="site-header">
       <a className="brand" href="#top" aria-label="いちわ ホーム"><span className="brand-mark">一</span><span>いちわ</span></a>
       <nav aria-label="メインナビゲーション"><a href="#top">作品を探す</a><a href="#about">このサイトについて</a></nav>
-      {/* <a className="submit-link" href="mailto:hello@example.com?subject=作品掲載の相談">作品を掲載する <span>↗</span></a> */}
+      <a className="submit-link" href="https://x.com/butchi_y">作品を掲載する (DM)<span>↗</span></a>
     </header>
     <section className="directory" id="top">
       <div className="section-heading"><div><p className="eyebrow"><span /> WEB COMIC DIRECTORY</p><h1>第1話から、探す。</h1></div><p>いま読める <strong>{mangaList.length}</strong> 作品</p></div>
