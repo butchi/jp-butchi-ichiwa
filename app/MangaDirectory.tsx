@@ -182,16 +182,16 @@ export function MangaDirectory() {
     <section className="directory" id="top">
       <div className="section-heading"><div><p className="eyebrow"><span /> WEB COMIC DIRECTORY</p><h1>第1話から、探す。</h1></div><p>いま読める <strong>{mangaList.length}</strong> 作品</p></div>
       <p className="directory-intro">Xで読めるWeb漫画を、作品・作者・公開形式から探せる一覧です。気になるキャラクターや話題の作品は、公式ポストから第1話へ。最新話、全巻、映画化などの最新情報は、作品ごとの公式アカウントや出版社の案内もあわせてご確認ください。</p>
-      <section className="ad-section" aria-label="スポンサー広告">
-        <p className="ad-label">SPONSORED</p>
-        <AdSenseUnit className="ad-frame" slot="4301222298" />
-      </section>
       <div className="search-row">
         <label className="search-box"><span aria-hidden="true">⌕</span><span className="sr-only">作品を検索</span><input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="タイトル・作者・キーワードで検索" /></label>
         <div className="genre-list" aria-label="公開形式で絞り込む">{formats.map((item) => <button className={format === item ? "active" : ""} key={item} onClick={() => setFormat(item)}>{item}</button>)}</div>
       </div>
       <p className="collection-note">{normalizedQuery ? "検索中はすべての公開形式から作品を探します。" : "分類を切り替えると、その分類の公式Xポストだけを読み込みます。"}</p>
       {filtered.length ? <div className="manga-grid">{filtered.map((manga, index) => <MangaCard manga={manga} number={index + 1} key={manga.title} />)}</div> : <div className="empty-state"><span>〇</span><h3>作品が見つかりませんでした</h3><p>検索ワードや公開形式を変えてみてください。</p></div>}
+      <section className="ad-section" aria-label="スポンサー広告">
+        <p className="ad-label">SPONSORED</p>
+        <AdSenseUnit className="ad-frame" slot="4301222298" />
+      </section>
     </section>
     <section className="about" id="about"><p className="eyebrow"><span /> ABOUT ICHIWA</p><div className="about-grid"><h2>たった1話から、<br />好きがはじまる。</h2><div><p>「いちわ」は、Xで公開されているWeb漫画の第1話を集めた小さな本棚です。作者本人または出版社公式アカウントの投稿だけを掲載し、物語の入口へ直接つなぎます。</p><p>連載中の作品は最新話を追う入口として、完結作品は読み返し用のアーカイブとして整理しています。書籍の全巻情報、映画・アニメなどの映像化、キャラクター情報は変更されることがあるため、購入や視聴の前には各作品の公式案内をご確認ください。</p><p className="note">公開形式：X完全連載型／独立短編・4コマ型／完結アーカイブ型／試し読み・外部誘導型</p><p className="ai-notice">サイト制作の一部に生成AIを利用しています。掲載内容に問題があればXのDMにてご連絡ください。</p></div></div></section>
     <footer><a className="brand footer-brand" href="#top"><span className="brand-mark">一</span><span>いちわ</span></a><p>Web漫画の第1話が見つかる場所。</p><p className="copyright">© 2026 <a href="https://x.com/butchi_y">岩淵夕希物智</a></p></footer>
