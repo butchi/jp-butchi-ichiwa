@@ -1,13 +1,20 @@
 import { StrictMode } from "react";
-import { createRoot } from "react-dom/client";
+import { createRoot, hydrateRoot } from "react-dom/client";
 import { MangaDirectory } from "../app/MangaDirectory";
 import { MangaDetail } from "../app/MangaDetail";
 import "../app/globals.css";
 
 const match = window.location.pathname.match(/^\/manga\/([^/]+)\/?$/);
 
-createRoot(document.getElementById("root")!).render(
+const root = document.getElementById("root")!;
+const page = (
   <StrictMode>
     {match ? <MangaDetail slug={decodeURIComponent(match[1])} /> : <MangaDirectory />}
-  </StrictMode>,
+  </StrictMode>
 );
+
+if (root.hasChildNodes()) {
+  hydrateRoot(root, page);
+} else {
+  createRoot(root).render(page);
+}

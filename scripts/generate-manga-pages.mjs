@@ -4,6 +4,7 @@ const siteUrl = "https://ichiwa.butchi.jp";
 const mangaSource = new URL("../app/MangaDirectory.tsx", import.meta.url);
 const indexTarget = new URL("../dist/index.html", import.meta.url);
 const distRoot = new URL("../dist/", import.meta.url);
+const serverEntry = new URL("../.prerender/entry-server.js", import.meta.url);
 
 const source = await readFile(mangaSource, "utf8");
 const slugs = [...source.matchAll(/^\s*entry\("([^"]+)"/gm)].map((match) => match[1]);
@@ -13,21 +14,44 @@ if (slugs.length === 0) {
 }
 
 const indexHtml = await readFile(indexTarget, "utf8");
+const { getMangaPage, renderMangaPage } = await import(serverEntry.href);
+
+const escapeHtml = (value) => value
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll('"', "&quot;")
+  .replaceAll("'", "&#39;");
 
 for (const slug of new Set(slugs)) {
+  const manga = getMangaPage(slug);
+  if (!manga) {
+    throw new Error(`Could not find manga data for ${slug}.`);
+  }
+
   const pageUrl = `${siteUrl}/manga/${encodeURIComponent(slug)}`;
+  const pageTitle = `${manga.title}｜いちわ`;
+  const pageDescription = manga.summary;
   const html = indexHtml
+    .replace("<title>いちわ｜Xで読めるWeb漫画の第1話・最新話一覧</title>", `<title>${escapeHtml(pageTitle)}</title>`)
+    .replace('name="description" content="Xで読めるWeb漫画の第1話を探せる作品一覧。作者、キャラクター、最新話、全巻、映画・アニメ化の公式情報への入口をまとめています。"', `name="description" content="${escapeHtml(pageDescription)}"`)
     .replace(
       '<link rel="canonical" href="https://ichiwa.butchi.jp/" />',
       `<link rel="canonical" href="${pageUrl}" />`,
     )
+    .replace('property="og:title" content="いちわ｜Xで読めるWeb漫画の第1話・最新話一覧"', `property="og:title" content="${escapeHtml(pageTitle)}"`)
+    .replace('property="og:description" content="Xで読めるWeb漫画の第1話を探せる作品一覧。作者、キャラクター、最新話、全巻、映画・アニメ化の公式情報への入口をまとめています。"', `property="og:description" content="${escapeHtml(pageDescription)}"`)
     .replace(
       '<meta property="og:url" content="https://ichiwa.butchi.jp/" />',
       `<meta property="og:url" content="${pageUrl}" />`,
-    );
+    )
+    .replace('name="twitter:title" content="いちわ｜Xで読めるWeb漫画の第1話・最新話一覧"', `name="twitter:title" content="${escapeHtml(pageTitle)}"`)
+    .replace('name="twitter:description" content="Xで読めるWeb漫画の第1話を探せる作品一覧。作者、キャラクター、最新話、全巻、映画・アニメ化の公式情報への入口をまとめています。"', `name="twitter:description" content="${escapeHtml(pageDescription)}"`)
+    .replace(/\s*<main id="seo-fallback"[\s\S]*?<\/main>\s*/, "\n    ")
+    .replace('<div id="root"></div>', `<div id="root">${renderMangaPage(slug)}</div>`);
 
-  if (html === indexHtml) {
-    throw new Error("Could not update canonical or og:url in the HTML template.");
+  if (!html.includes(`canonical" href="${pageUrl}`) || !html.includes(`og:url" content="${pageUrl}`)) {
+    throw new Error(`Could not update URL metadata for ${slug}.`);
   }
 
   const pageDirectory = new URL(`manga/${encodeURIComponent(slug)}/`, distRoot);
