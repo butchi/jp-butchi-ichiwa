@@ -7,11 +7,12 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm run sitemap && vite build",
+    "build": "npm run sitemap && vite build && npm run prerender:manga",
     "start": "vite preview",
     "test": "npm run build",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "sitemap": "node scripts/generate-sitemap.mjs",
+    "prerender:manga": "node scripts/generate-manga-pages.mjs",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
