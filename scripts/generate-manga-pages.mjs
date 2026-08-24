@@ -15,6 +15,7 @@ if (slugs.length === 0) {
 
 const indexHtml = await readFile(indexTarget, "utf8");
 const { getMangaPage, renderMangaPage } = await import(serverEntry.href);
+await mkdir(new URL("manga/", distRoot), { recursive: true });
 
 for (const slug of new Set(slugs)) {
   const manga = getMangaPage(slug);
@@ -24,9 +25,8 @@ for (const slug of new Set(slugs)) {
 
   const html = renderMangaPageHtml(indexHtml, manga, renderMangaPage(slug));
 
-  const pageDirectory = new URL(`manga/${encodeURIComponent(slug)}/`, distRoot);
-  await mkdir(pageDirectory, { recursive: true });
-  await writeFile(new URL("index.html", pageDirectory), html, "utf8");
+  const pageTarget = new URL(`manga/${encodeURIComponent(slug)}.html`, distRoot);
+  await writeFile(pageTarget, html, "utf8");
 }
 
 console.log(`Generated ${new Set(slugs).size} manga detail pages.`);
